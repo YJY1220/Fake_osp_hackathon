@@ -5,6 +5,7 @@ from flask import Flask, render_template, url_for, request, json
 import requests
 import re
 from bs4 import BeautifulSoup
+import sys
 from elasticsearch import Elasticsearch
 
  
@@ -22,11 +23,14 @@ def crawling():
         #response = request.get(url)
         response = requests.get(request.form["URL"])
         soup = BeautifulSoup(response.content,'html.parser')
-
+        
+        es_host="http://localhost:9200"
+        es = Elasticsearch(es_host)
         if "kakao" in str(request.form["URL"]):
             result_list=[]
             ex1_list=[]
             exxxx_list=[]
+            global dic
             dic ={}
             # content = soup.select_one('ul.list_jobs')
             # titles = content.select('li >div > div > a')
@@ -53,8 +57,7 @@ def crawling():
                     "frequencies":value_list
                 }
 
-                es_host="http://localhost:9200"
-                es = Elasticsearch(es_host)
+              
 
                 es.index(index='web',id=1,document=e1)
                 # if len(i) > 0:
