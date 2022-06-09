@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -11,6 +11,24 @@
     <form action="http://127.0.0.1:5000/crawling" method="POST">
         <p> URL <input type = "text" name = "URL"/></p>
         <input type="submit" value="crawling">
+    </form>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>webpage crawling</title>
+</head>
+<body>
+    <h2>기업 인턴 채용 크롤링 하기</h2>
+    <form method="POST" action="/contents" autocomplete="off">
+        <input type="checkbox" name="company" value="kakao">카카오</br>
+        <input type="checkbox" name="company" value="naver">네이버</br>
+        <input type="checkbox" name="company" value="line">라인</br>
+        <input type="checkbox" name="company" value="coupang">쿠팡</br>
+        <button type="submit" style="width:100px;">크롤링하기</button>
     </form>
 </body>
 </html>
