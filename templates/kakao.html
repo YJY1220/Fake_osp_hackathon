@@ -1,0 +1,38 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crawling Webpage</title>
+</head>
+<body>
+    <h1>카카오 크롤링 페이지 띄우기</h1>
+    {{ list }}<br>
+
+</body>
+</html> -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>카카오</title>
+</head>
+<body>
+    <h2>카카오 채용 공고</h2>
+    <ul>
+        {% for key, value in result.items() %}
+            <li>
+            {{key}}</br> {{value.0}} {{value.1}} {{value.2}}{{value.3}} </br> 
+            {% for key1, value1 in link.items() %}
+                {% if key == key1 %}
+                    {{value1}} </br>
+                {% endif %}
+            {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+    <button onclick="history.back()">돌아가기</button>
+</body>
+</html>
+
