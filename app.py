@@ -128,7 +128,7 @@ def contents():
             url = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
             options = webdriver.ChromeOptions()
             options.add_experimental_option("excludeSwitches", ["enable-logging"])
-            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
             # driver = webdriver.Chrome(executable_path = 'C:\\chromedriver_win32\\chromedriver',options=options)
 
             driver.get(url)
@@ -164,6 +164,23 @@ def contents():
                 link_dic[title] = link
 
             return render_template('woowahan.html', result=res_dic, link=link_dic)
+        
+        if(company.__eq__('daangn')):
+            url = 'https://team.daangn.com/jobs/'
+            req = requests.get(url)
+            soup = BeautifulSoup(req.text, 'html.parser')
+
+            list_area = soup.find('div', class_=False)            
+            link_dic = {}
+            
+            for job in list_area.find_all('li', class_="c-deAcZv"):
+                link = "https://team.daangn.com/jobs" + job.a["href"]
+                title = job.find_all('h3', class_='c-boyXyq')
+                for text in title:
+                    title_text = text.get_text()
+                    link_dic[title_text] = link
+
+            return render_template('daangn.html',link=link_dic)
 
 if __name__=='__main__':
     app.run()
