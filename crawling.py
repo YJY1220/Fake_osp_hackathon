@@ -32,22 +32,23 @@ new_height = last_height
 html = driver.page_source
 soup = BeautifulSoup(html, 'html.parser')
 
-#list_area = soup.find_all('ul', class_='recruit-type-list')
-#list_area = soup.find('ul', class_='recruit-type-list').find_all('li')
 res_dic = {}
 link_dic = {}
+plus_dic = {}
 list_area = soup.find('ul', class_="recruit-type-list")
 for job in list_area.find_all('li', class_=False):
-    # show = job.find('a')["href"]
-    # show_number = re.sub(r'[^0-9]', '', show)
     link = "https://career.woowahan.com" + job.a["href"]
     title = job.find('p', class_='fr-view').text
     tag = job.find_all('div', class_='flag-tag')
+    plustag = job.find_all('div', class_='flag-tag ellipsis')
     tags = []
+    plustags = []
     for item in tag:
         tags.append(item.get_text().strip())
-
+    for box in plustag:
+        plustags.append(box.get_text().strip())
     res_dic[title] = tags
     link_dic[title] = link
-print(link_dic)
-#print(res_dic)
+    plus_dic[title] = plustags
+#print(link_dic)
+print(plus_dic)
