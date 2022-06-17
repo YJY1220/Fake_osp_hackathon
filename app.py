@@ -123,45 +123,45 @@ def contents():
 
             return render_template('coupang.html', link=link_dic)
 
-        if (company.__eq__("woowahan")):
-            url = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
-            driver = webdriver.Chrome(executable_path = 'C:\\chromedriver_win32\\chromedriver')
-            driver.get(url)
-            driver.implicitly_wait(5)
+        # if (company.__eq__("woowahan")):
+        #     url = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
+        #     driver = webdriver.Chrome(executable_path = 'C:\\chromedriver_win32\\chromedriver')
+        #     driver.get(url)
+        #     driver.implicitly_wait(5)
 
-            last_height = driver.execute_script("return document.body.scrollHeight")
-            while True:
-                driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
-                time.sleep(0.1)
-                new_height = driver.execute_script("return document.documentElement.scrollHeight")
+        #     last_height = driver.execute_script("return document.body.scrollHeight")
+        #     while True:
+        #         driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
+        #         time.sleep(0.1)
+        #         new_height = driver.execute_script("return document.documentElement.scrollHeight")
 
-                if new_height == last_height:
-                    break
-                else:
-                    last_height = new_height
+        #         if new_height == last_height:
+        #             break
+        #         else:
+        #             last_height = new_height
 
-            new_height = last_height
+        #     new_height = last_height
 
-            html = driver.page_source
-            soup = BeautifulSoup(html, 'html.parser')
+        #     html = driver.page_source
+        #     soup = BeautifulSoup(html, 'html.parser')
 
-            list_area = soup.find_all('ul', class_='recruit-type-list')
-            res_dic = {}
-            link_dic = {}
-            for job in list_area:
-                show = job.a["onclick"]
-                show_number = re.sub(r'[^0-9]', '', show)
-                link = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
-                title = job.find('p', class_='fr-view').text
-                tag = job.find_all('div', class_='flag-tag')
-                tags = []
-                for item in tag:
-                    tags.append(item.get_text().strip())
+        #     list_area = soup.find_all('ul', class_='recruit-type-list')
+        #     res_dic = {}
+        #     link_dic = {}
+        #     for job in list_area:
+        #         show = job.a["onclick"]
+        #         show_number = re.sub(r'[^0-9]', '', show)
+        #         link = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
+        #         title = job.find('p', class_='fr-view').text
+        #         tag = job.find_all('div', class_='flag-tag')
+        #         tags = []
+        #         for item in tag:
+        #             tags.append(item.get_text().strip())
 
-                res_dic[title] = tags
-                link_dic[title] = link
+        #         res_dic[title] = tags
+        #         link_dic[title] = link
 
-            return render_template('naver.html', result=res_dic, link=link_dic)
+        #     return render_template('naver.html', result=res_dic, link=link_dic)
 
 if __name__=='__main__':
     app.run()
