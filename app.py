@@ -45,7 +45,7 @@ def contents():
 
         if (company.__eq__("naver")):
             url = "https://recruit.navercorp.com/rcrt/list.do?srchClassCd=1000000"
-            driver = webdriver.Chrome(r'C:\JiyeYu\knu_02_01\realOSP\osp_repo\fake_osp\chromedriver.exe')
+            driver = webdriver.Chrome(executable_path = 'C:\\chromedriver_win32\\chromedriver')
             driver.get(url)
             driver.implicitly_wait(5)
 
