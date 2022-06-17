@@ -45,7 +45,7 @@ def contents():
 
         if (company.__eq__("naver")):
             url = "https://recruit.navercorp.com/rcrt/list.do?srchClassCd=1000000"
-            driver = webdriver.Chrome('C:\chromedriver_win32\chromedriver.exe')
+            driver = webdriver.Chrome(r'C:\JiyeYu\knu_02_01\realOSP\osp_repo\fake_osp\chromedriver.exe')
             driver.get(url)
             driver.implicitly_wait(5)
 
@@ -94,7 +94,7 @@ def contents():
 
             for job in soup.find('ul', class_="job_list").find_all('li'):
                 link = "https://careers.linecorp.com/" + job.find('a')["href"]
-                title = job.find('h4', class_='tit_jobs').text
+                title = job.find('h3', class_='title').text
                 tag = job.find_all('div', class_='text_filter')
                 tags = []
                 for item in tag:
@@ -107,7 +107,6 @@ def contents():
 
         if (company.__eq__("coupang")):
             url = 'https://www.coupang.jobs/kr/jobs/?department=Ecommerce+Engineering&department=Play+Engineering&department=Product+UX&department=Search+and+Discovery&department=Search+and+Discovery+Core+Infrastructure&department=Cloud+Platform&department=Corporate+IT&department=eCommerce+Product&department=FTS+(Fulfillment+and+Transportation+System)&department=Marketplace%2c+Catalog+%26+Pricing+Systems&department=Program+Management+Office&department=Customer+Experience+Product'
-#url = 'https://careers.kakao.com/jobs?part=TECHNOLOGY&keyword=&skilset=&page=1'
             req = requests.get(url)
             soup = BeautifulSoup(req.text, 'html.parser')
 
