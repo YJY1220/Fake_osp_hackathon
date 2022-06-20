@@ -167,7 +167,7 @@ for i in range(1, 7):
         link_dic[title] = link
 
 def insert(body):
-    return es.index(index=index, doc_type=doc_type, body=body)
+    return es.index(index=index, body=body)
     
 def search(index, data=None):
     if data is None:
@@ -195,6 +195,5 @@ for job in res_dic.keys():
     
     print(ir)
 
-insert(data)
 sr = search(index)
 pprint.pprint(sr)
