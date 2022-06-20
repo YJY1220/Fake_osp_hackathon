@@ -19,6 +19,7 @@ index = 'employment'
 doc_type = 'daangn'
 data = {
     'title': '',
+    'tags' : '',
     'url': ''
     }
 
@@ -31,23 +32,47 @@ line_url = "https://careers.linecorp.com/ko/jobs?ca=Engineering&ci=Seoul,Bundang
 coupang_url = "https://www.coupang.jobs/kr/jobs/?department=Ecommerce+Engineering&department=Play+Engineering&department=Product+UX&department=Search+and+Discovery&department=Search+and+Discovery+Core+Infrastructure&department=Cloud+Platform&department=Corporate+IT&department=eCommerce+Product&department=FTS+(Fulfillment+and+Transportation+System)&department=Marketplace%2c+Catalog+%26+Pricing+Systems&department=Program+Management+Office&department=Customer+Experience+Product"
 woowahan_url = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
 daangn_url = "https://team.daangn.com/jobs/"
-url = 'https://team.daangn.com/jobs/'
-req = requests.get(url)
-soup = BeautifulSoup(req.text, 'html.parser')
 
-list_area = soup.find('div', class_=False)            
+url = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+driver.get(url)
+driver.implicitly_wait(5)
+
+last_height = driver.execute_script("return document.body.scrollHeight")
+while True:
+    driver.execute_script("window.scrollTo(0, document.documentElement.scrollHeight);")
+    time.sleep(0.5)
+    new_height = driver.execute_script("return document.documentElement.scrollHeight")
+
+    if new_height == last_height:
+        break
+    else:
+        last_height = new_height
+
+new_height = last_height
+
+html = driver.page_source
+soup = BeautifulSoup(html, 'html.parser')
+
+
+res_dic = {}
 link_dic = {}
-            
-for job in list_area.find_all('li', class_="c-deAcZv"):
-    link = "https://team.daangn.com/jobs" + job.a["href"]
-    title = job.find_all('h3', class_='c-boyXyq')
-    for text in title:
-        title_text = text.get_text()
+list_area = soup.find('ul', class_="recruit-type-list")
+for job in list_area.find_all('li', class_=False):
+    link = "https://career.woowahan.com" + job.a["href"]
+    title = job.find('p', class_='fr-view').text
+    tag = job.find_all('div', class_='flag-tag')
+    tags = []
+    for item in tag:
+        tags.append(item.get_text().strip())
 
-        link_dic[title_text] = link
+    res_dic[title] = tags
+    link_dic[title] = link
+
 
 for job in link_dic.keys():
     data['title'] = job
+    data['tags'] = link_dic[job]
     data['url'] = link_dic[job]
     ir =insert(data)
 
