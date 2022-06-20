@@ -10,7 +10,7 @@
 
 # # # es = Elasticsearch('http://localhost:9200')
 
-# # # kakao_url = "https://careers.kakao.com/jobs"
+#kakao_url = "https://careers.kakao.com/jobs"
 # # # naver_url = "https://recruit.navercorp.com/cnts/tech"
 # # # line_url = "https://careers.linecorp.com/ko/jobs?ca=Engineering&ci=Seoul,Bundang&co=East%20Asia"
 # # # coupang_url = "https://www.coupang.jobs/kr/jobs/?department=Ecommerce+Engineering&department=Play+Engineering&department=Product+UX&department=Search+and+Discovery&department=Search+and+Discovery+Core+Infrastructure&department=Cloud+Platform&department=Corporate+IT&department=eCommerce+Product&department=FTS+(Fulfillment+and+Transportation+System)&department=Marketplace%2c+Catalog+%26+Pricing+Systems&department=Program+Management+Office&department=Customer+Experience+Product"
@@ -195,5 +195,6 @@ for job in res_dic.keys():
     
     print(ir)
 
+insert(data)
 sr = search(index)
 pprint.pprint(sr)
