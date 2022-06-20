@@ -9,14 +9,29 @@ import time
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
+from elasticsearch import Elasticsearch
+from elasticsearch import helpers
 
 app = Flask(__name__)
+
+es = Elasticsearch('http://localhost:9200')
+
+index = 'employment'
+doc_type = 'daangn'
+data = {
+    'title': '',
+    'tags' : '',
+    'url': ''
+    }
 
 @app.route('/')
 def home():
     return render_template("main.html")
 
 @app.route('/contents', methods=['POST'])
+
+def insert(body):
+    return es.index(index=index, body=body)
 def contents():
     error = None
     if request.method == 'POST':
@@ -42,11 +57,21 @@ def contents():
                     res_dic[title] = tags
                     link_dic[title] = link
 
+                    
+            for job in res_dic.keys():
+                data['title'] = job
+                data['tags'] = res_dic[job]
+                data['url'] = link_dic[job]
+                ir =insert(data)
+
             return render_template('kakao.html', result=res_dic, link=link_dic)
 
         if (company.__eq__("naver")):
             url = "https://recruit.navercorp.com/rcrt/list.do?srchClassCd=1000000"
-            driver = webdriver.Chrome(executable_path = 'C:\\chromedriver_win32\\chromedriver')
+            options = webdriver.ChromeOptions()
+            options.add_experimental_option("excludeSwitches", ["enable-logging"])
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
+
             driver.get(url)
             driver.implicitly_wait(5)
 
@@ -82,6 +107,12 @@ def contents():
                 res_dic[title] = tags
                 link_dic[title] = link
 
+            for job in res_dic.keys():
+                data['title'] = job
+                data['tags'] = res_dic[job]
+                data['url'] = link_dic[job]
+                ir =insert(data)
+
             return render_template('naver.html', result=res_dic, link=link_dic)
 
         if (company.__eq__("line")):
@@ -104,6 +135,12 @@ def contents():
                 res_dic[title] = tags
                 link_dic[title] = link
 
+            for job in res_dic.keys():
+                data['title'] = job
+                data['tags'] = res_dic[job]
+                data['url'] = link_dic[job]
+                ir =insert(data)
+
             return render_template('line.html', result=res_dic, link=link_dic)
 
         if (company.__eq__("coupang")):
@@ -122,6 +159,11 @@ def contents():
 
                 link_dic[title_text] = link
 
+            for job in link_dic.keys():
+                data['title'] = job
+                data['url'] = link_dic[job]
+                ir =insert(data)
+
             return render_template('coupang.html', link=link_dic)
 
         if (company.__eq__("woowahan")):
@@ -129,7 +171,6 @@ def contents():
             options = webdriver.ChromeOptions()
             options.add_experimental_option("excludeSwitches", ["enable-logging"])
             driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
-            # driver = webdriver.Chrome(executable_path = 'C:\\chromedriver_win32\\chromedriver',options=options)
 
             driver.get(url)
             driver.implicitly_wait(5)
@@ -163,6 +204,12 @@ def contents():
                 res_dic[title] = tags
                 link_dic[title] = link
 
+            for job in res_dic.keys():
+                data['title'] = job
+                data['tags'] = res_dic[job]
+                data['url'] = link_dic[job]
+                ir =insert(data)
+
             return render_template('woowahan.html', result=res_dic, link=link_dic)
         
         if(company.__eq__('daangn')):
@@ -180,6 +227,11 @@ def contents():
                     title_text = text.get_text()
                     link_dic[title_text] = link
 
+            for job in res_dic.keys():
+                data['title'] = job
+                data['url'] = link_dic[job]
+                ir =insert(data)
+  
             return render_template('daangn.html',link=link_dic)
 
 if __name__=='__main__':
