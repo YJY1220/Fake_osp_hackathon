@@ -11,18 +11,19 @@ from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
 from elasticsearch import Elasticsearch
 from elasticsearch import helpers
+from selenium.webdriver.chrome.options import Options
 
 app = Flask(__name__)
 
-es = Elasticsearch('http://localhost:9200')
+# es = Elasticsearch('http://localhost:9200')
 
-index = 'employment'
-doc_type = 'daangn'
-data = {
-    'title': '',
-    'tags' : '',
-    'url': ''
-    }
+# index = 'employment'
+# doc_type = 'daangn'
+# data = {
+#     'title': '',
+#     'tags' : '',
+#     'url': ''
+#     }
 
 @app.route('/')
 def home():
@@ -30,8 +31,8 @@ def home():
 
 @app.route('/contents', methods=['POST'])
 
-def insert(body):
-    return es.index(index=index, body=body)
+# def insert(body):
+#     return es.index(index=index, body=body)
 def contents():
     error = None
     if request.method == 'POST':
@@ -58,11 +59,11 @@ def contents():
                     link_dic[title] = link
 
                     
-            for job in res_dic.keys():
-                data['title'] = job
-                data['tags'] = res_dic[job]
-                data['url'] = link_dic[job]
-                ir =insert(data)
+            # for job in res_dic.keys():
+            #     data['title'] = job
+            #     data['tags'] = res_dic[job]
+            #     data['url'] = link_dic[job]
+            #     ir =insert(data)
 
             return render_template('kakao.html', result=res_dic, link=link_dic)
 
@@ -70,6 +71,7 @@ def contents():
             url = "https://recruit.navercorp.com/rcrt/list.do?srchClassCd=1000000"
             options = webdriver.ChromeOptions()
             options.add_experimental_option("excludeSwitches", ["enable-logging"])
+            options.add_argument('--headless')
             driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
 
             driver.get(url)
@@ -107,11 +109,11 @@ def contents():
                 res_dic[title] = tags
                 link_dic[title] = link
 
-            for job in res_dic.keys():
-                data['title'] = job
-                data['tags'] = res_dic[job]
-                data['url'] = link_dic[job]
-                ir =insert(data)
+            # for job in res_dic.keys():
+            #     data['title'] = job
+            #     data['tags'] = res_dic[job]
+            #     data['url'] = link_dic[job]
+            #     ir =insert(data)
 
             return render_template('naver.html', result=res_dic, link=link_dic)
 
@@ -135,11 +137,11 @@ def contents():
                 res_dic[title] = tags
                 link_dic[title] = link
 
-            for job in res_dic.keys():
-                data['title'] = job
-                data['tags'] = res_dic[job]
-                data['url'] = link_dic[job]
-                ir =insert(data)
+            # for job in res_dic.keys():
+            #     data['title'] = job
+            #     data['tags'] = res_dic[job]
+            #     data['url'] = link_dic[job]
+            #     ir =insert(data)
 
             return render_template('line.html', result=res_dic, link=link_dic)
 
@@ -159,10 +161,10 @@ def contents():
 
                 link_dic[title_text] = link
 
-            for job in link_dic.keys():
-                data['title'] = job
-                data['url'] = link_dic[job]
-                ir =insert(data)
+            # for job in link_dic.keys():
+            #     data['title'] = job
+            #     data['url'] = link_dic[job]
+            #     ir =insert(data)
 
             return render_template('coupang.html', link=link_dic)
 
@@ -170,7 +172,12 @@ def contents():
             url = "https://career.woowahan.com/?jobCodes&employmentTypeCodes=&serviceSectionCodes=&careerPeriod=&keyword=&category=jobGroupCodes%3ABA005001#recruit-list"
             options = webdriver.ChromeOptions()
             options.add_experimental_option("excludeSwitches", ["enable-logging"])
-            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()),options=options)
+            options.add_argument('--headless')
+            #chrome_options.add_argument('--no-sandbox')
+            # chrome_options.add_argument("--single-process")
+            # chrome_options.add_argument('--disable-dev-shm-usage')
+            #path = "/home/jiye/.wdm/drivers/chromedriver/linux64/102.0.5005.61/chromedriver"
+            driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
 
             driver.get(url)
             driver.implicitly_wait(5)
@@ -204,11 +211,11 @@ def contents():
                 res_dic[title] = tags
                 link_dic[title] = link
 
-            for job in res_dic.keys():
-                data['title'] = job
-                data['tags'] = res_dic[job]
-                data['url'] = link_dic[job]
-                ir =insert(data)
+            # for job in res_dic.keys():
+            #     data['title'] = job
+            #     data['tags'] = res_dic[job]
+            #     data['url'] = link_dic[job]
+            #     ir =insert(data)
 
             return render_template('woowahan.html', result=res_dic, link=link_dic)
         
@@ -227,10 +234,10 @@ def contents():
                     title_text = text.get_text()
                     link_dic[title_text] = link
 
-            for job in res_dic.keys():
-                data['title'] = job
-                data['url'] = link_dic[job]
-                ir =insert(data)
+            # for job in res_dic.keys():
+            #     data['title'] = job
+            #     data['url'] = link_dic[job]
+            #     ir =insert(data)
   
             return render_template('daangn.html',link=link_dic)
 
