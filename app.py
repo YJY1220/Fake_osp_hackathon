@@ -228,7 +228,7 @@ def contents():
             link_dic = {}
             
             for job in list_area.find_all('li', class_="c-deAcZv"):
-                link = "https://team.daangn.com/jobs" + job.a["href"]
+                link = "https://team.daangn.com" + job.a["href"]
                 title = job.find_all('h3', class_='c-boyXyq')
                 for text in title:
                     title_text = text.get_text()
